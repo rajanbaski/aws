@@ -1,0 +1,11 @@
+import boto3
+from datetime import datetime
+
+def lambda_handler(event, context):
+
+    s3 = boto3.resource(
+        's3',
+        region_name='us-east-1'
+    )
+    content="String content to write to a new S3 file. {time}".format(time=datetime.now())
+    s3.Object('<bucket-name>', '<FileName>').put(Body=content)
