@@ -1,0 +1,11 @@
+import json
+import boto3
+def lambda_handler(event, context):
+    print("The ECS task definition %s under the ECS Cluster %s has changed state to %s." %(event["detail"]["group"],event["detail"]["clusterArn"],event["detail"]["lastStatus"]))
+    client = boto3.client('sns')
+    response = client.publish(
+        TopicArn='arn:aws:sns:us-east-1:111222333444:predict-ecs',
+        Message='The ECS task definition %s under the ECS Cluster %s has changed state to %s.' %(event["detail"]["group"],event["detail"]["clusterArn"],event["detail"]["lastStatus"]),
+        Subject='ECS Status: predict',
+        MessageStructure='string'
+    )
